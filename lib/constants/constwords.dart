@@ -1,5 +1,4 @@
 class Constants {
-
   //Texts
   static const String firstname = 'First Name';
   static const String lastname = 'Last Name';
@@ -13,6 +12,8 @@ class Constants {
   static const String nav1 = 'Book Tickets';
 
   //Messages
-  static const String confirmationmsg = 'Your Ticket Has Been Booked Successfully.';
+  static const String confirmationmsg =
+      'Your Ticket Has Been Booked Successfully.';
   static const String cancelmsg = 'Your Tickect Has Been Canceled Successfully';
+  static const String errormsg = 'Ticket Booking Failed';
 }

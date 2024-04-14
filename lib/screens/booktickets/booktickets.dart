@@ -2,8 +2,11 @@ import 'package:dbms_project/constants/colors.dart';
 import 'package:dbms_project/constants/constwords.dart';
 import 'package:dbms_project/constants/sizes.dart';
 import 'package:dbms_project/messagebox/apploaders.dart';
+import 'package:dbms_project/models/bookticketmodel.dart';
+import 'package:dbms_project/mongodb/mongodatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 class BookTickets extends StatefulWidget {
   const BookTickets({super.key});
@@ -13,6 +16,13 @@ class BookTickets extends StatefulWidget {
 }
 
 class _BookTicketsState extends State<BookTickets> {
+  final firstname = TextEditingController();
+  final lastname = TextEditingController();
+  final gender = TextEditingController();
+  final age = TextEditingController();
+  final from = TextEditingController();
+  final destination = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +49,7 @@ class _BookTicketsState extends State<BookTickets> {
                       //firstname textfield
                       Expanded(
                         child: TextFormField(
+                          controller: firstname,
                           expands: false,
                           decoration: const InputDecoration(
                             labelText: Constants.firstname,
@@ -54,6 +65,7 @@ class _BookTicketsState extends State<BookTickets> {
                       //lastname textfield
                       Expanded(
                         child: TextFormField(
+                          controller: lastname,
                           expands: false,
                           decoration: const InputDecoration(
                             labelText: Constants.lastname,
@@ -73,6 +85,7 @@ class _BookTicketsState extends State<BookTickets> {
                       //age textfield
                       Expanded(
                         child: TextFormField(
+                          controller: age,
                           expands: false,
                           decoration: const InputDecoration(
                             labelText: Constants.age,
@@ -88,6 +101,7 @@ class _BookTicketsState extends State<BookTickets> {
                       //gender textfield
                       Expanded(
                         child: TextFormField(
+                          controller: gender,
                           expands: false,
                           decoration: const InputDecoration(
                             labelText: Constants.gender,
@@ -104,6 +118,7 @@ class _BookTicketsState extends State<BookTickets> {
 
                   //from loaction
                   TextFormField(
+                    controller: from,
                     expands: false,
                     decoration: const InputDecoration(
                       labelText: Constants.from,
@@ -117,6 +132,7 @@ class _BookTicketsState extends State<BookTickets> {
 
                   //destination
                   TextFormField(
+                    controller: destination,
                     expands: false,
                     decoration: const InputDecoration(
                       labelText: Constants.destination,
@@ -132,8 +148,8 @@ class _BookTicketsState extends State<BookTickets> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    AppLoaders.successSnackBar(
-                        title: 'Success!!', message: Constants.confirmationmsg);
+                    _insertDetails(firstname.text, lastname.text, age.text,
+                        gender.text, from.text, destination.text);
                   },
                   child: const Text(Constants.book),
                 ),
@@ -143,5 +159,41 @@ class _BookTicketsState extends State<BookTickets> {
         ),
       ),
     );
+  }
+
+  Future<void> _insertDetails(
+    String firstname,
+    String lastname,
+    String age,
+    String gender,
+    String from,
+    String destination,
+  ) async {
+    var id = mongo.ObjectId();
+    final insertdetails = BookTicketsModel(
+        id: id,
+        firstname: firstname,
+        lastname: lastname,
+        age: age,
+        gender: gender,
+        from: from,
+        destination: destination);
+    var result = await MongoDatabase.insert(insertdetails);
+    if (result == '1') {
+      AppLoaders.successSnackBar(
+          title: 'Success!', message: Constants.confirmationmsg);
+    } else {
+      AppLoaders.errorSnackBar(title: 'Failed!', message: Constants.errormsg);
+    }
+    _clearAll();
+  }
+
+  void _clearAll() {
+    firstname.text = "";
+    lastname.text = "";
+    age.text = "";
+    gender.text = "";
+    from.text = "";
+    destination.text = "";
   }
 }
