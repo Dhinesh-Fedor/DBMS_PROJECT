@@ -1,6 +1,10 @@
 # dbms_project
 
-A new Flutter project.
+A new Flutter project along with mongodb as backend.
+
+# Note
+
+I used the db directly without any server end.
 
 ## Getting Started
 
