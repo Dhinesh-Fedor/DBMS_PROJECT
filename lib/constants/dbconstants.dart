@@ -2,6 +2,6 @@
 
 class DbConstants {
   static const mongodb_url =
-      "mongodb+srv://dhinesh:dhinesh2341@dbmsprojectcluster.nfaxrez.mongodb.net/BookTickets?retryWrites=true&w=majority&appName=DbmsProjectCluster";
-  static const collection_name = "tickets";
+      ""; //add your cluster url inside the quotes
+  static const collection_name = ""; // add your collection name
 }
